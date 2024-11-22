@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+
+/* Define a custom color */
+@layer utilities {
+    .text-primary-color {
+        color: #ff0000; /* Replace with your custom hex value */
+    }
+    .border-primary-400 {
+        border-color: #ff0000;
+    }
+    .bg-primary {
+        background-color: #ff0000;
+    }
+}
+
+/* Set global text color for anchor tags */
+a {
+    @apply text-primary-color;
+}

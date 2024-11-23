@@ -75,11 +75,6 @@ valet link mindsize
 ```
 You should now be able to navigate to the application via http://mindsize.test (or whichever domain you chose).
 
-Upon navigation, you will be presented with a login screen.  Use the following credentials to log in.
-
-```
-Email: `user@example.com`
-Password: `password`
-```
+Upon navigation, you will be presented with a login screen.  Use the credentials you created during seeding to log in.
 
 You should now be able to navigate the application.

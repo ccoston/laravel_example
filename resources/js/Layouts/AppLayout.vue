@@ -73,7 +73,7 @@ export default {
                                 </NavLink>
 
                                 <!-- Reports Dropdown -->
-                                <div class="ml-3 relative flex items-center" :class="['border-b-2', {'border-primary-400': isReportsRoute }]">
+                                <div class="ml-3 relative flex items-center" :class="['border-b-1', {'border-b-2 border-primary-400': isReportsRoute }]">
                                     <Dropdown width="48">
                                         <template #trigger>
                                             <span class="inline-flex rounded-md">

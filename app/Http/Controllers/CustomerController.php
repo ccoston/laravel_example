@@ -3,39 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\Product;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
-    public function index () {
+    public function index (): \Inertia\Response
+    {
         // customer’s name, email, count of orders, and total spent
         $customers = Customer::withCount('orders')
             ->paginate(15);
-
-        // Append the `total_sales` attribute to each item in the collection
-        $customers->getCollection()->map(function ($customer) {
-            $customer->total = $customer->total;
-            return $customer;
-        });
 
         return Inertia::render('Customers', [
             'customers' => $customers
         ]);
     }
 
-    public function show ($id) {
-        // get the customer with orders and orderItems
-        $customer = Customer::findOrFail($id)
+    /**
+     * @throws BindingResolutionException
+     */
+    public function show ($id): \Inertia\Response
+    {
+        $customer = Customer::with(['orders.items.product']) // Eager load orders and related data
+        ->findOrFail($id)
             ->append('total');
 
-        $orders = $customer
-            ->orders()
-            ->paginate(5);
+        $orders = $customer->orders()->paginate(5);
 
-        $products = new Product;
-        $topProduct = $products->topProductsByCustomer($id, 1)
+        $topProduct = app()
+            ->make('App\Models\Product')
+            ->topProductsByCustomer($id, 1)
             ->first();
 
         return Inertia::render('CustomerDetail', [

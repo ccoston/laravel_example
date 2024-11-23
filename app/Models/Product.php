@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 
 class Product extends Model
@@ -22,9 +23,9 @@ class Product extends Model
 
     /**
      * Relation for the associated orderItems that relate to this product
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
@@ -43,7 +44,7 @@ class Product extends Model
      * @param $endDate
      * @return mixed
      */
-    public function topProducts($count, $startDate = null, $endDate = null)
+    public function topProducts($count, $startDate = null, $endDate = null): mixed
     {
         // used to sanitize the timestamps for cache key use
         $cacheDate = '';

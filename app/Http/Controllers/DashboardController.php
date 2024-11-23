@@ -47,7 +47,7 @@ class DashboardController extends Controller
      * @param $endDate
      * @return mixed
      */
-    private function topProducts($count, $startDate = null, $endDate = null)
+    private function topProducts($count, $startDate = null, $endDate = null): mixed
     {
         return Product::withCount(['items as item_count' => function ($query) use ($startDate, $endDate){
             $query->select(\DB::raw('coalesce(sum(quantity), 0)'));

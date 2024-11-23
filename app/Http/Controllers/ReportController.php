@@ -7,14 +7,16 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Inertia\Response;
+use Inertia\ResponseFactory;
 
 class ReportController extends Controller
 {
 
     /**
-     * @return \Inertia\Response|\Inertia\ResponseFactory
+     * @return Response|ResponseFactory
      */
-    public function bestSellers(): \Inertia\Response|\Inertia\ResponseFactory
+    public function bestSellers(): Response|ResponseFactory
     {
         $product = new Product;
         $bestSellers = $product->topProducts(10, \Carbon\Carbon::today()->subDays(7));
@@ -25,9 +27,9 @@ class ReportController extends Controller
     }
 
     /**
-     * @return \Inertia\Response|\Inertia\ResponseFactory
+     * @return Response|ResponseFactory
      */
-    public function bestCustomers(): \Inertia\Response|\Inertia\ResponseFactory
+    public function bestCustomers(): Response|ResponseFactory
     {
         $customer = new Customer;
         $bestCustomers = $customer->topCustomers(10, \Carbon\Carbon::today()->subDays(7));
@@ -38,9 +40,9 @@ class ReportController extends Controller
     }
 
     /**
-     * @return \Inertia\Response|\Inertia\ResponseFactory
+     * @return Response|ResponseFactory
      */
-    public function orderStatus(): \Inertia\Response|\Inertia\ResponseFactory
+    public function orderStatus(): Response|ResponseFactory
     {
         $order = new Order;
         $orderStatusCounts = $order->statusCounts();

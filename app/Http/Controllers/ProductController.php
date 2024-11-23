@@ -8,7 +8,7 @@ use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(): \Inertia\Response
     {
 
         $products = Product::paginate()->withQueryString();
@@ -18,7 +18,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show(int $id)
+    public function show(int $id): \Inertia\Response
     {
         $product = Product::findOrFail($id)
             ->append('lastSevenDaysCount');

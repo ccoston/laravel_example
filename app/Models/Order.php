@@ -43,17 +43,17 @@ class Order extends Model
         'customer_note'
     ];
 
-    public function customer()
+    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function items()
+    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    public function getTotalAttribute()
+    public function getTotalAttribute(): float
     {
         return round($this->items->sum('total'), 2);
     }

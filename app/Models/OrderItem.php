@@ -10,7 +10,7 @@ class OrderItem extends Model
 {
     use HasFactory;
 
-//    protected $appends = ['price'];
+    protected $appends = ['total'];
     protected $fillable = [
         'order_id',
         'product_id',
@@ -22,7 +22,7 @@ class OrderItem extends Model
      * Get the order associated with this item
      * @return BelongsTo
      */
-    public function order()
+    public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
@@ -40,7 +40,7 @@ class OrderItem extends Model
      * Accessor that returns the price via the related product
      * @return mixed
      */
-    public function getPriceAttribute()
+    public function getPriceAttribute(): mixed
     {
         return $this->product->price;
     }
@@ -49,7 +49,7 @@ class OrderItem extends Model
      * Accessor that returns the total for this item by calculating quantity times price
      * @return float|int
      */
-    public function getTotalAttribute()
+    public function getTotalAttribute(): float|int
     {
         return $this->quantity * $this->product->price;
     }
@@ -58,7 +58,7 @@ class OrderItem extends Model
      * Accessor that returns the product name for this item via the related product
      * @return mixed
      */
-    public function getProductNameAttribute()
+    public function getProductNameAttribute(): mixed
     {
         return $this->product->name;
     }

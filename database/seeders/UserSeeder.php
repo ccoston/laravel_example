@@ -1,28 +1,34 @@
 <?php
-
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    protected $command;
+
     public function run(): void
     {
-        // Create test user
-        User::create([
-            'name' => 'User',
-            'email' => 'user@example.com',
-            'password' => Hash::make('password')
+        // Check if users table exists to prevent errors
+        if (!Schema::hasTable('users')) {
+            $this->command->warn('The "users" table does not exist. Please run migrations first.');
+            return;
+        }
+
+        // Prompt for the password
+        $password = $this->command->ask('Enter a password for the user', 'default_password');
+
+        // Insert the user into the database
+        DB::table('users')->insert([
+            'name' => $this->command->ask('Enter the user\'s name', 'John Doe'),
+            'email' => $this->command->ask('Enter the user\'s email', 'john.doe@example.com'),
+            'password' => Hash::make($password),
         ]);
 
-        User::factory()
-            ->count(10)
-            ->create();
+        $this->command->info('User created successfully.');
     }
 }
+

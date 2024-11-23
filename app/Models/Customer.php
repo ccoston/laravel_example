@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Cache;
 
 class Customer extends Model
 {
     use HasFactory;
+
+    protected $appends = ['total'];
 
     // set cache TTL to 1 hour.
     private $cacheTTL = 3600;
@@ -27,7 +30,7 @@ class Customer extends Model
     /**
      * Get all of the deployments for the project.
      */
-    public function items(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    public function items(): HasManyThrough
     {
         return $this->hasManyThrough(OrderItem::class, Order::class);
     }
@@ -93,5 +96,17 @@ class Customer extends Model
                 ->take($count)
                 ->get();
         });
+    }
+
+    public function topItems($limit = 1): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->items()
+            ->with('product') // Eager load the related product
+            ->select('product_id') // Specify the columns to group and calculate totals
+            ->addSelect(DB::raw('SUM(quantity) as total_quantity')) // Calculate the total quantity
+            ->groupBy('product_id')
+            ->orderByDesc('total_quantity')
+            ->limit($limit)
+            ->get();
     }
 }

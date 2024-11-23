@@ -8,7 +8,7 @@ use Inertia\Inertia;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(): \Inertia\Response
     {
         // customer’s name, email, count of orders, and total spent
         $orders = Order::with('customer')
@@ -20,7 +20,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show($id): \Inertia\Response
     {
         $order = Order::with('customer')
             ->findOrFail($id);
